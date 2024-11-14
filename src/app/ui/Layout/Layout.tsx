@@ -8,21 +8,27 @@ import {
   SunOutlined,
 } from '@ant-design/icons'
 import { css } from '@emotion/react'
-import { Button, Calendar, Layout, Menu, theme } from 'antd'
+import { Button, Calendar, Layout, Menu, MenuProps, theme } from 'antd'
 import { Content, Header } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
 import { capitalize } from 'lodash'
 import { useContext, useState, type FC } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Outlet, useNavigate } from 'react-router-dom'
 
 const { useToken } = theme
 
 export const AppLayout: FC = () => {
   const { token } = useToken()
   const { t } = useTranslation()
-  const { toggleTheme, themePreset } = useContext(themeCtx)
+  const { toggleTheme, isDark } = useContext(themeCtx)
   const { locale, toggleLocale } = useContext(localeCtx)
   const [collapsed, setCollapsed] = useState(false)
+  const navigate = useNavigate()
+
+  const onSelectMenu: MenuProps['onClick'] = ({ key }) => {
+    navigate(key)
+  }
 
   return (
     <Layout
@@ -33,11 +39,7 @@ export const AppLayout: FC = () => {
       <Header
         css={css`
           border-bottom: 1px solid
-            rgba(
-              ${themePreset === 'light'
-                ? '5, 5, 5, 0.06'
-                : '253, 253, 253, 0.12'}
-            );
+            rgba(${!isDark ? '5, 5, 5, 0.06' : '253, 253, 253, 0.12'});
           position: sticky;
           top: 0;
           left: 0;
@@ -54,7 +56,7 @@ export const AppLayout: FC = () => {
           <Logo
             height={50}
             css={css`
-              filter: brightness(${themePreset === 'dark' ? 70 : 100}%);
+              filter: brightness(${isDark ? 70 : 100}%);
               transition: filter 0.5s;
             `}
           />
@@ -66,7 +68,7 @@ export const AppLayout: FC = () => {
             STORAGE
           </h3>
           <Button
-            icon={themePreset === 'light' ? <SunOutlined /> : <MoonOutlined />}
+            icon={!isDark ? <SunOutlined /> : <MoonOutlined />}
             onClick={toggleTheme}
           />
           <Button onClick={toggleLocale}>{locale}</Button>
@@ -95,18 +97,19 @@ export const AppLayout: FC = () => {
           >
             <Menu
               mode="inline"
+              onClick={onSelectMenu}
               css={css`
                 border-radius: 16px;
                 min-height: 500px;
               `}
               items={[
                 {
-                  key: 'disk',
+                  key: '/disk',
                   label: capitalize(t('disk')),
                   icon: <DatabaseOutlined />,
                 },
                 {
-                  key: 'trash',
+                  key: '/trash',
                   label: capitalize(t('trash')),
                   icon: <DeleteOutlined />,
                 },
@@ -146,6 +149,7 @@ export const AppLayout: FC = () => {
             `}
           >
             <Calendar fullscreen={false} />
+            <Outlet />
           </Content>
         </Layout>
       </Content>

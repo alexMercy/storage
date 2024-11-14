@@ -1,7 +1,7 @@
 import { createContext } from 'react'
 
 export const themeCtx = createContext({
-  themePreset: '',
+  isDark: false,
   toggleTheme: () => {
     return
   },

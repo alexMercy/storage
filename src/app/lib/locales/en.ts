@@ -1,4 +1,4 @@
 export const en = {
   disk: 'disk',
-  // trash: 'trash',
+  trash: 'trash',
 }
