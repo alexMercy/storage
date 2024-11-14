@@ -1,31 +1,39 @@
-import { theme } from 'antd'
+import { theme, ThemeConfig } from 'antd'
 
-export const themes: Record<string, any> = {
+const themeBase: ThemeConfig = {
+  token: {
+    colorPrimary: '#85bd3f',
+    colorInfo: '#85bd3f',
+    borderRadius: 10,
+    wireframe: false,
+    fontFamily: '"Open Sans", sans-serif',
+  },
+  components: {
+    Layout: {
+      siderBg: 'rgb(245,245,245)',
+      headerBg: 'rgb(245,245,245)',
+      headerHeight: 64,
+    },
+  },
+}
+
+export const themes: Record<string, ThemeConfig> = {
   light: {
     token: {
-      colorPrimary: '#85bd3f',
-      colorInfo: '#85bd3f',
+      ...themeBase.token,
       colorTextBase: '#1e1e1e',
-      borderRadius: 16,
-      wireframe: false,
-      colorPrimaryBg: '#f6fde1',
     },
     components: {
-      Button: {
-        colorFillTertiary: 'rgba(140,255,0,0.1)',
-      },
-      Divider: {
-        lineWidth: 5,
-      },
-      Menu: {
-        itemHoverBg: 'rgb(248,252,237)',
-      },
-      Cascader: {
-        controlItemBgHover: 'rgb(248,252,237)',
-      },
+      ...themeBase.components,
     },
   },
   dark: {
+    token: {
+      ...themeBase.token,
+    },
+    components: {
+      ...themeBase.components,
+    },
     algorithm: theme.darkAlgorithm,
   },
 }
