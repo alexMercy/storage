@@ -31,7 +31,9 @@ export const AppLayout: FC = () => {
     >
       <Header
         style={{
-          borderBottom: '1px solid rgba(5, 5, 5, 0.06)',
+          borderBottom: `1px solid rgba(${
+            themePreset === 'light' ? '5, 5, 5, 0.06' : '253, 253, 253, 0.12'
+          })`,
           position: 'sticky',
           top: 0,
           left: 0,
