@@ -7,6 +7,7 @@ import {
   RightOutlined,
   SunOutlined,
 } from '@ant-design/icons'
+import { css } from '@emotion/react'
 import { Button, Calendar, Layout, Menu, theme } from 'antd'
 import { Content, Header } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
@@ -25,30 +26,45 @@ export const AppLayout: FC = () => {
 
   return (
     <Layout
-      style={{
-        background: token.Layout?.headerBg,
-      }}
+      css={css`
+        background: ${token.Layout?.headerBg};
+      `}
     >
       <Header
-        style={{
-          borderBottom: `1px solid rgba(${
-            themePreset === 'light' ? '5, 5, 5, 0.06' : '253, 253, 253, 0.12'
-          })`,
-          position: 'sticky',
-          top: 0,
-          left: 0,
-          zIndex: 2,
-        }}
+        css={css`
+          border-bottom: 1px solid
+            rgba(
+              ${themePreset === 'light'
+                ? '5, 5, 5, 0.06'
+                : '253, 253, 253, 0.12'}
+            );
+          position: sticky;
+          top: 0;
+          left: 0;
+          z-index: 2;
+        `}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div
+          css={css`
+            display: flex;
+            align-items: center;
+            gap: 12px;
+          `}
+        >
           <Logo
             height={50}
-            style={{
-              filter: `brightness(${themePreset === 'dark' ? 70 : 100}%)`,
-              transition: 'filter .5s',
-            }}
+            css={css`
+              filter: brightness(${themePreset === 'dark' ? 70 : 100}%);
+              transition: filter 0.5s;
+            `}
           />
-          <h3 style={{ margin: 0 }}>STORAGE</h3>
+          <h3
+            css={css`
+              margin: 0;
+            `}
+          >
+            STORAGE
+          </h3>
           <Button
             icon={themePreset === 'light' ? <SunOutlined /> : <MoonOutlined />}
             onClick={toggleTheme}
@@ -57,32 +73,32 @@ export const AppLayout: FC = () => {
         </div>
       </Header>
       <Content
-        style={{
-          background: token.Layout?.headerBg,
-        }}
+        css={css`
+          background: ${token.Layout?.headerBg};
+        `}
       >
         <Layout
-          style={{
-            minHeight: `calc(100dvh - ${token.Layout?.headerHeight}px)`,
-            background: token.Layout?.headerBg,
-          }}
+          css={css`
+            min-height: calc(100dvh - ${token.Layout?.headerHeight}px);
+            background: ${token.Layout?.headerBg};
+          `}
         >
           <Sider
             collapsed={collapsed}
             width={350}
             collapsedWidth={150}
-            style={{
-              position: 'fixed',
-              padding: '24px',
-              minHeight: `calc(100dvh - ${token.Layout?.headerHeight}px)`,
-            }}
+            css={css`
+              position: fixed;
+              padding: 24px;
+              min-height: calc(100dvh - ${token.Layout?.headerHeight}px);
+            `}
           >
             <Menu
               mode="inline"
-              style={{
-                borderRadius: '16px',
-                height: '500px',
-              }}
+              css={css`
+                border-radius: 16px;
+                min-height: 500px;
+              `}
               items={[
                 {
                   key: 'disk',
@@ -97,16 +113,16 @@ export const AppLayout: FC = () => {
               ]}
             />
             <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                marginTop: 24,
-              }}
+              css={css`
+                display: flex;
+                justify-content: center;
+                margin-top: 24px;
+              `}
             >
               <Button
-                style={{
-                  width: !collapsed ? 300 : 150,
-                }}
+                css={css`
+                  width: ${!collapsed ? '300px' : '150px'} !important;
+                `}
                 color="primary"
                 variant={'filled'}
                 icon={<RightOutlined rotate={!collapsed ? 180 : 0} />}
@@ -117,13 +133,17 @@ export const AppLayout: FC = () => {
               </Button>
             </div>
           </Sider>
-          <div style={{ width: 350 }}></div>
+          <div
+            css={css`
+              width: 350px;
+            `}
+          ></div>
           <Content
-            style={{
-              padding: '24px',
-              minHeight: 280,
-              backgroundColor: token.Layout?.headerBg,
-            }}
+            css={css`
+              padding: 24px;
+              min-height: 280px;
+              min-height: ${token.Layout?.headerBg};
+            `}
           >
             <Calendar fullscreen={false} />
           </Content>
