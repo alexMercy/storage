@@ -8,7 +8,7 @@ import {
   SunOutlined,
 } from '@ant-design/icons'
 import { css } from '@emotion/react'
-import { Button, Calendar, Layout, Menu, MenuProps, theme } from 'antd'
+import { Button, Calendar, Card, Layout, Menu, MenuProps, theme } from 'antd'
 import { Content, Header } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
 import { capitalize } from 'lodash'
@@ -43,7 +43,7 @@ export const AppLayout: FC = () => {
           position: sticky;
           top: 0;
           left: 0;
-          z-index: 2;
+          z-index: 999;
         `}
       >
         <div
@@ -132,7 +132,7 @@ export const AppLayout: FC = () => {
                 onClick={() => setCollapsed((prev) => !prev)}
               >
                 {/* TODO: add antd animation */}
-                {!collapsed && 'Collapse'}
+                {!collapsed && capitalize(t('collapse'))}
               </Button>
             </div>
           </Sider>
@@ -148,8 +148,14 @@ export const AppLayout: FC = () => {
               min-height: ${token.Layout?.headerBg};
             `}
           >
-            <Calendar fullscreen={false} />
-            <Outlet />
+            <Card
+              css={css`
+                min-height: 500px;
+              `}
+            >
+              <Calendar fullscreen={false} />
+              <Outlet />
+            </Card>
           </Content>
         </Layout>
       </Content>
