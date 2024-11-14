@@ -1,26 +1,34 @@
-import { themeCtx } from '@/App'
+import { localeCtx, themeCtx } from '@/app/lib/core-context'
 import { Logo } from '@/assets'
 import {
+  DatabaseOutlined,
+  DeleteOutlined,
   MoonOutlined,
-  RadarChartOutlined,
   RightOutlined,
   SunOutlined,
 } from '@ant-design/icons'
-import { Button, Layout, Menu, theme } from 'antd'
+import { Button, Calendar, Layout, Menu, theme } from 'antd'
 import { Content, Header } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
+import { capitalize } from 'lodash'
 import { useContext, useState, type FC } from 'react'
-import { Outlet } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const { useToken } = theme
 
 export const AppLayout: FC = () => {
   const { token } = useToken()
+  const { t } = useTranslation()
   const { toggleTheme, themePreset } = useContext(themeCtx)
+  const { locale, toggleLocale } = useContext(localeCtx)
   const [collapsed, setCollapsed] = useState(false)
 
   return (
-    <Layout>
+    <Layout
+      style={{
+        background: token.Layout?.headerBg,
+      }}
+    >
       <Header
         style={{
           borderBottom: '1px solid rgba(5, 5, 5, 0.06)',
@@ -31,18 +39,30 @@ export const AppLayout: FC = () => {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <Logo height={50} />
+          <Logo
+            height={50}
+            style={{
+              filter: `brightness(${themePreset === 'dark' ? 70 : 100}%)`,
+              transition: 'filter .5s',
+            }}
+          />
           <h3 style={{ margin: 0 }}>STORAGE</h3>
           <Button
             icon={themePreset === 'light' ? <SunOutlined /> : <MoonOutlined />}
             onClick={toggleTheme}
           />
+          <Button onClick={toggleLocale}>{locale}</Button>
         </div>
       </Header>
-      <Content>
+      <Content
+        style={{
+          background: token.Layout?.headerBg,
+        }}
+      >
         <Layout
           style={{
             minHeight: `calc(100dvh - ${token.Layout?.headerHeight}px)`,
+            background: token.Layout?.headerBg,
           }}
         >
           <Sider
@@ -61,17 +81,32 @@ export const AppLayout: FC = () => {
                 borderRadius: '16px',
                 height: '500px',
               }}
-              items={[{ key: '1', label: '1', icon: <RadarChartOutlined /> }]}
+              items={[
+                {
+                  key: 'disk',
+                  label: capitalize(t('disk')),
+                  icon: <DatabaseOutlined />,
+                },
+                {
+                  key: 'trash',
+                  label: capitalize(t('trash')),
+                  icon: <DeleteOutlined />,
+                },
+              ]}
             />
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: 24,
+              }}
+            >
               <Button
                 style={{
-                  position: 'absolute',
-                  width: !collapsed ? 100 : 50,
-                  bottom: 50,
+                  width: !collapsed ? 300 : 150,
                 }}
                 color="primary"
-                variant={!collapsed ? 'text' : 'filled'}
+                variant={'filled'}
                 icon={<RightOutlined rotate={!collapsed ? 180 : 0} />}
                 onClick={() => setCollapsed((prev) => !prev)}
               >
@@ -88,7 +123,7 @@ export const AppLayout: FC = () => {
               backgroundColor: token.Layout?.headerBg,
             }}
           >
-            <Outlet />
+            <Calendar fullscreen={false} />
           </Content>
         </Layout>
       </Content>
