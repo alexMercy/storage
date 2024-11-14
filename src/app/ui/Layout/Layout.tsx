@@ -1,12 +1,13 @@
-import { RadarChartOutlined } from '@ant-design/icons'
+import { Logo } from '@/assets'
+import { RadarChartOutlined, RightOutlined } from '@ant-design/icons'
 import { Button, Layout, Menu, theme } from 'antd'
 import { Content, Header } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
 import { useState, type FC } from 'react'
 import { Outlet } from 'react-router-dom'
-import { Logo } from '../../../assets'
 
 const { useToken } = theme
+
 export const AppLayout: FC = () => {
   const { token } = useToken()
 
@@ -56,12 +57,16 @@ export const AppLayout: FC = () => {
               <Button
                 style={{
                   position: 'absolute',
-                  width: !collapsed ? 150 : 50,
+                  width: !collapsed ? 100 : 50,
                   bottom: 50,
                 }}
+                color="primary"
+                variant={!collapsed ? 'text' : 'filled'}
+                icon={<RightOutlined rotate={!collapsed ? 180 : 0} />}
                 onClick={() => setCollapsed((prev) => !prev)}
               >
-                Collapse
+                {/* TODO: add antd animation */}
+                {!collapsed && 'Collapse'}
               </Button>
             </div>
           </Sider>
