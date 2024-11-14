@@ -3,7 +3,8 @@ import { createContext, FC, useState } from 'react'
 import { themes } from './app/lib/themes'
 import { AppLayout } from './app/ui/Layout/Layout'
 
-const themeCtx = createContext({
+export const themeCtx = createContext({
+  themePreset: '',
   toggleTheme: () => {
     return
   },
@@ -19,7 +20,7 @@ export const App: FC = () => {
 
   return (
     <ConfigProvider theme={themes[themePreset]}>
-      <themeCtx.Provider value={{ toggleTheme }}>
+      <themeCtx.Provider value={{ toggleTheme, themePreset }}>
         <AppLayout />
       </themeCtx.Provider>
     </ConfigProvider>

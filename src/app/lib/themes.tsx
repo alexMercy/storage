@@ -10,8 +10,6 @@ const themeBase: ThemeConfig = {
   },
   components: {
     Layout: {
-      siderBg: 'rgb(245,245,245)',
-      headerBg: 'rgb(245,245,245)',
       headerHeight: 64,
     },
   },
@@ -24,7 +22,11 @@ export const themes: Record<string, ThemeConfig> = {
       colorTextBase: '#1e1e1e',
     },
     components: {
-      ...themeBase.components,
+      Layout: {
+        ...themeBase.components?.Layout,
+        siderBg: 'rgb(245,245,245)',
+        headerBg: 'rgb(245,245,245)',
+      },
     },
   },
   dark: {
@@ -32,7 +34,11 @@ export const themes: Record<string, ThemeConfig> = {
       ...themeBase.token,
     },
     components: {
-      ...themeBase.components,
+      Layout: {
+        ...themeBase.components?.Layout,
+        siderBg: 'rgb(27, 27, 27)',
+        headerBg: 'rgb(27, 27, 27)',
+      },
     },
     algorithm: theme.darkAlgorithm,
   },

@@ -1,16 +1,22 @@
+import { themeCtx } from '@/App'
 import { Logo } from '@/assets'
-import { RadarChartOutlined, RightOutlined } from '@ant-design/icons'
+import {
+  MoonOutlined,
+  RadarChartOutlined,
+  RightOutlined,
+  SunOutlined,
+} from '@ant-design/icons'
 import { Button, Layout, Menu, theme } from 'antd'
 import { Content, Header } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
-import { useState, type FC } from 'react'
+import { useContext, useState, type FC } from 'react'
 import { Outlet } from 'react-router-dom'
 
 const { useToken } = theme
 
 export const AppLayout: FC = () => {
   const { token } = useToken()
-
+  const { toggleTheme, themePreset } = useContext(themeCtx)
   const [collapsed, setCollapsed] = useState(false)
 
   return (
@@ -27,6 +33,10 @@ export const AppLayout: FC = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <Logo height={50} />
           <h3 style={{ margin: 0 }}>STORAGE</h3>
+          <Button
+            icon={themePreset === 'light' ? <SunOutlined /> : <MoonOutlined />}
+            onClick={toggleTheme}
+          />
         </div>
       </Header>
       <Content>
@@ -71,7 +81,13 @@ export const AppLayout: FC = () => {
             </div>
           </Sider>
           <div style={{ width: 350 }}></div>
-          <Content style={{ padding: '24px', minHeight: 280 }}>
+          <Content
+            style={{
+              padding: '24px',
+              minHeight: 280,
+              backgroundColor: token.Layout?.headerBg,
+            }}
+          >
             <Outlet />
           </Content>
         </Layout>
