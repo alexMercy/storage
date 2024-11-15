@@ -1,31 +1,29 @@
 import { localeCtx, themeCtx } from '@/app/lib/core-context'
+import { THEMES } from '@/app/lib/core-enums'
 import {
   DatabaseOutlined,
   DeleteOutlined,
   MoonOutlined,
-  RightOutlined,
   SunOutlined,
   TranslationOutlined,
 } from '@ant-design/icons'
 import { css } from '@emotion/react'
-import { Button, Card, Menu, theme } from 'antd'
-import Sider from 'antd/es/layout/Sider'
+import { Menu } from 'antd'
 import { ItemType, MenuItemType } from 'antd/es/menu/interface'
 import { capitalize } from 'lodash'
-import { useContext, useState, type FC } from 'react'
+import { useContext, type FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-const { useToken } = theme
 export const Sidemenu: FC = () => {
-  const { token } = useToken()
   const { t } = useTranslation()
-  const [collapsed, setCollapsed] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
   const { toggleTheme, isDark } = useContext(themeCtx)
   const { locale, toggleLocale } = useContext(localeCtx)
 
-  const sidemenuWidth = [350, 150]
+  const selectedKey = location.pathname.slice(1).split('/')[0]
+
   const navItems: ItemType<MenuItemType>[] = [
     {
       key: 'disk',
@@ -42,7 +40,7 @@ export const Sidemenu: FC = () => {
     { type: 'divider' },
     {
       key: 'theme',
-      label: capitalize(t('theme')),
+      label: capitalize(t(`theme.${[THEMES.LIGHT, THEMES.DARK][+isDark]}`)),
       icon: !isDark ? <SunOutlined /> : <MoonOutlined />,
       onClick: toggleTheme,
     },
@@ -55,63 +53,16 @@ export const Sidemenu: FC = () => {
   ]
 
   return (
-    <>
-      <Sider
-        collapsed={collapsed}
-        width={sidemenuWidth[0]}
-        collapsedWidth={sidemenuWidth[1]}
-        css={css`
-          position: fixed;
-          padding: 25px;
-          padding-left: 50px;
-          min-height: calc(100dvh - ${token.Layout?.headerHeight}px);
-        `}
-      >
-        <Card
-          css={css`
-            .ant-card-body {
-              padding: 0;
-            }
-          `}
-        >
-          <Menu
-            mode="inline"
-            css={css`
-              border-radius: 16px;
-              min-height: 500px;
-              border-inline-end: 0 !important;
-            `}
-            items={navItems}
-          />
-        </Card>
-
-        <div
-          css={css`
-            display: flex;
-            justify-content: center;
-            margin-top: 24px;
-          `}
-        >
-          <Button
-            css={css`
-              width: ${!collapsed ? '300px' : '150px'} !important;
-            `}
-            color="primary"
-            variant={'filled'}
-            icon={<RightOutlined rotate={!collapsed ? 180 : 0} />}
-            onClick={() => setCollapsed((prev) => !prev)}
-          >
-            {/* TODO: add antd animation */}
-            {!collapsed && capitalize(t('collapse'))}
-          </Button>
-        </div>
-      </Sider>
-      <div
-        css={css`
-          transition: width 0.2s;
-          width: ${sidemenuWidth[+collapsed]}px;
-        `}
-      ></div>
-    </>
+    <Menu
+      mode="inline"
+      css={css`
+        border-radius: 16px;
+        min-height: 500px;
+        border-inline-end: 0 !important;
+      `}
+      selectable={false}
+      selectedKeys={[selectedKey]}
+      items={navItems}
+    />
   )
 }

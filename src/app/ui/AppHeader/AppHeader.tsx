@@ -1,11 +1,20 @@
 import { themeCtx } from '@/app/lib/core-context'
 import { Logo } from '@/assets'
 import { css } from '@emotion/react'
+import { Button, Grid } from 'antd'
 import { Header } from 'antd/es/layout/layout'
-import { useContext, type FC } from 'react'
+import { Dispatch, SetStateAction, useContext, type FC } from 'react'
 
-export const AppHeader: FC = () => {
+interface AppHeaderProps {
+  setMenu: Dispatch<SetStateAction<boolean>>
+}
+
+export const AppHeader: FC<AppHeaderProps> = ({ setMenu }) => {
   const { isDark } = useContext(themeCtx)
+  const screens = Grid.useBreakpoint()
+  const openMenu = () => {
+    setMenu(true)
+  }
 
   return (
     <Header
@@ -16,6 +25,9 @@ export const AppHeader: FC = () => {
         top: 0;
         left: 0;
         z-index: 999;
+        display: flex;
+        align-items: center;
+        gap: 24px;
       `}
     >
       <div
@@ -40,6 +52,7 @@ export const AppHeader: FC = () => {
           STORAGE
         </h3>
       </div>
+      {!screens.md && <Button onClick={openMenu}>Menu</Button>}
     </Header>
   )
 }
