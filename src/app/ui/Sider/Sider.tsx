@@ -1,11 +1,11 @@
 import { Sidemenu } from '@/app/ui/Sidemenu/Sidemenu'
 import { RightOutlined } from '@ant-design/icons'
-import { css } from '@emotion/react'
 import { Button, Grid, theme } from 'antd'
 import AntdSider from 'antd/es/layout/Sider'
 import { capitalize } from 'lodash'
 import { useState, type FC } from 'react'
 import { useTranslation } from 'react-i18next'
+import scs from './Sider.css'
 
 const { useToken } = theme
 
@@ -16,6 +16,7 @@ export const Sider: FC = () => {
   const [collapsed, setCollapsed] = useState(!screens.lg)
   const sidemenuWidth = [350, 150]
 
+  const styles = scs({ token, collapsed, screens, sidemenuWidth })
   return (
     <>
       <AntdSider
@@ -24,26 +25,13 @@ export const Sider: FC = () => {
         onBreakpoint={(e) => setCollapsed(e)}
         width={sidemenuWidth[0]}
         collapsedWidth={sidemenuWidth[1]}
-        css={css`
-          position: fixed;
-          padding: 25px;
-          padding-left: 50px;
-          min-height: calc(100dvh - ${token.Layout?.headerHeight}px);
-        `}
+        css={styles.sider}
       >
         <Sidemenu />
 
-        <div
-          css={css`
-            display: flex;
-            justify-content: center;
-            margin-top: 24px;
-          `}
-        >
+        <div css={styles.collapseWrapper}>
           <Button
-            css={css`
-              width: ${!collapsed ? '300px' : '150px'} !important;
-            `}
+            css={styles.collapse}
             color="primary"
             variant={'filled'}
             icon={<RightOutlined rotate={!collapsed ? 180 : 0} />}
@@ -55,12 +43,7 @@ export const Sider: FC = () => {
         </div>
       </AntdSider>
 
-      <div
-        css={css`
-          transition: width 0.2s;
-          width: ${!screens.md ? 0 : sidemenuWidth[+collapsed]}px;
-        `}
-      ></div>
+      <div css={styles.placeholder}></div>
     </>
   )
 }

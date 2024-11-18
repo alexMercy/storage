@@ -7,6 +7,7 @@ const themeBase: ThemeConfig = {
     borderRadius: 10,
     wireframe: false,
     fontFamily: '"Open Sans", sans-serif',
+    fontWeightStrong: 700,
   },
   components: {
     Layout: {

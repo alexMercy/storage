@@ -4,10 +4,6 @@
   --background-color: #ffffff;
   --text-color: #000000;
 
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -28,4 +24,9 @@ body {
 
 .anticon svg {
   transition: transform 0.2s ease;
+}
+
+.ant-btn,
+.ant-menu-title-content {
+  font-weight: 700;
 }

@@ -1,10 +1,17 @@
-import { Grid } from 'antd'
+import { Card, Grid } from 'antd'
+import { capitalize } from 'lodash'
 import type { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const { useBreakpoint } = Grid
 export const DiskPage: FC = () => {
+  const { t } = useTranslation()
   const screens = useBreakpoint()
-  console.log(screens)
 
-  return <div>Disk page work</div>
+  return (
+    <div>
+      {capitalize(t('disk'))}
+      <Card title="card titles" />
+    </div>
+  )
 }
