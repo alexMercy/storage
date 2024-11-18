@@ -1,5 +1,6 @@
 import { en } from '@/app/lib/locales/en'
 import { ru } from '@/app/lib/locales/ru'
+import { Locale } from 'antd/es/locale'
 import enUS from 'antd/es/locale/en_US'
 import ruRU from 'antd/es/locale/ru_RU'
 import i18n from 'i18next'
@@ -31,7 +32,7 @@ i18n.use(initReactI18next).init({
 })
 
 export const getAntdLocale = () => {
-  return i18n.t('antd', { returnObjects: true })
+  return i18n.t('antd', { returnObjects: true }) as Locale
 }
 
 export default i18n

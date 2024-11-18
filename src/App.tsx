@@ -4,7 +4,6 @@ import { getAntdLocale } from '@/app/lib/i18n'
 import { router } from '@/app/routes'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ConfigProvider } from 'antd'
-import { Locale } from 'antd/es/locale'
 import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { RouterProvider } from 'react-router-dom'
@@ -31,7 +30,7 @@ export const App: FC = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ConfigProvider theme={themes[themePreset]} locale={locale as Locale}>
+      <ConfigProvider theme={themes[themePreset]} locale={locale}>
         <themeCtx.Provider
           value={{ toggleTheme, isDark: themePreset === THEMES.DARK }}
         >
