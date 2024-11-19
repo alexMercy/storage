@@ -13,7 +13,7 @@ export const Sider: FC = () => {
   const { token } = useToken()
   const { t } = useTranslation()
   const screens = Grid.useBreakpoint()
-  const [collapsed, setCollapsed] = useState(!screens.lg)
+  const [collapsed, setCollapsed] = useState(!(screens.lg ?? true))
   const sidemenuWidth = [350, 150]
 
   const styles = scs({ token, collapsed, screens, sidemenuWidth })
