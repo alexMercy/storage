@@ -44,7 +44,9 @@ export const AppLayout: FC = () => {
           )}
           <Content css={[styles.mainPadding, styles.mainMinHeight()]}>
             <Card bordered={false} css={styles.mainMinHeight('- 50px')}>
-              <Outlet />
+              <div css={styles.overflow}>
+                <Outlet />
+              </div>
             </Card>
           </Content>
         </Layout>

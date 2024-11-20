@@ -12,6 +12,9 @@ const root = (token: GlobalToken) => ({
     padding: 25px;
     padding-right: 50px;
   `,
+  overflow: css`
+    overflow: hidden;
+  `,
 })
 
 export default root
