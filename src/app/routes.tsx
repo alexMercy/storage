@@ -14,6 +14,10 @@ export const router = createBrowserRouter([
         element: <DiskPage />,
       },
       {
+        path: '/disk/:uuid',
+        element: <DiskPage />,
+      },
+      {
         path: '/trash',
         element: <p>Trash Works</p>,
       },

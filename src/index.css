@@ -30,3 +30,7 @@ body {
 .ant-menu-title-content {
   font-weight: 700;
 }
+
+.ant-breadcrumb {
+  font-weight: 700;
+}

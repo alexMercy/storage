@@ -20,7 +20,7 @@ interface AppFile extends ResourceBase {
   meta: FileMeta
 }
 
-type Resource = AppFile | FlatFolder
+export type Resource = AppFile | FlatFolder
 
 type _Resource = AppFile | Folder
 
@@ -30,8 +30,8 @@ interface FlatFolder extends ResourceBase {
 
 interface Folder extends FlatFolder {}
 
-interface Response {
-  parentPath: string[]
+export interface FolderResources {
+  parentPath: { uuid: string; title: string }[]
   title: string
   // paths: { uuid: string; title: string }[]
   resources: Resource[]
@@ -71,6 +71,12 @@ const rootDB: _Resource[] = [
     type: RESOURCE_TYPES.FILE,
     title: 'ВКР.pdf',
     meta: { mimetype: mime.getType('ВКР.pdf')! },
+  },
+  {
+    parent: '511d46e2-5bcb-4498-a33b-ea9aa4145b28',
+    uuid: '652d1f61-61c5-4831-b712-5ac8cf3fd710',
+    type: RESOURCE_TYPES.FOLDER,
+    title: 'Иннер Папочка',
   },
 ]
 
@@ -173,15 +179,33 @@ const getChildResources = (path: string[]) => {
   return resources
 }
 
-export const getItems = (uuid: string): Response => {
+//TODO: rewrite later
+const getParentPath = (path: string[]) => {
+  const parentPath: FolderResources['parentPath'] = []
+  // O(M*N) I think, because path is short array
+  for (const node of path) {
+    const resource = [rootFolder, ...rootDB].find((res) => res.uuid === node)
+
+    if (!resource) {
+      throw new Error('Wrong path')
+    }
+
+    parentPath.push({ uuid: resource.uuid, title: resource.title })
+  }
+
+  return parentPath
+}
+
+export const getItems = (uuid: string): FolderResources => {
   const path = uuid !== 'root' ? paths[uuid] : [rootFolder.uuid]
 
   if (!path) throw new Error('UUID not found')
 
   const folder = findFolder(path)
+  const parentPath = getParentPath(path)
 
   return {
-    parentPath: path,
+    parentPath,
     title: folder.title,
     resources: getChildResources(path) ?? [],
   }

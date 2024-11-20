@@ -1,13 +1,13 @@
 import {
-  CustomerServiceOutlined,
-  FileExcelOutlined,
-  FileImageOutlined,
-  FilePdfOutlined,
-  FilePptOutlined,
-  FileTextOutlined,
-  FileWordOutlined,
-  FileZipOutlined,
-  VideoCameraOutlined,
+  CustomerServiceTwoTone,
+  FileExcelTwoTone,
+  FileImageTwoTone,
+  FilePdfTwoTone,
+  FilePptTwoTone,
+  FileTextTwoTone,
+  FileWordTwoTone,
+  FileZipTwoTone,
+  VideoCameraTwoTone,
 } from '@ant-design/icons'
 
 export enum MimeGroupsEnum {
@@ -37,19 +37,19 @@ export enum MimeAppTypesEnum {
 }
 
 export const mimeIconTree: Record<MimeGroupsEnum, any> = {
-  [MimeGroupsEnum.DEFAULT]: <FileTextOutlined />,
-  [MimeGroupsEnum.VIDEO]: <VideoCameraOutlined />,
-  [MimeGroupsEnum.AUDIO]: <CustomerServiceOutlined />,
-  [MimeGroupsEnum.IMAGE]: <FileImageOutlined />,
-  [MimeGroupsEnum.TEXT]: <FileTextOutlined />,
+  [MimeGroupsEnum.DEFAULT]: FileTextTwoTone,
+  [MimeGroupsEnum.VIDEO]: VideoCameraTwoTone,
+  [MimeGroupsEnum.AUDIO]: CustomerServiceTwoTone,
+  [MimeGroupsEnum.IMAGE]: FileImageTwoTone,
+  [MimeGroupsEnum.TEXT]: FileTextTwoTone,
   [MimeGroupsEnum.APPLICATION]: {
-    [MimeAppTypesEnum.DOC]: <FileWordOutlined />,
-    [MimeAppTypesEnum.DOCX]: <FileWordOutlined />,
-    [MimeAppTypesEnum.XLS]: <FileExcelOutlined />,
-    [MimeAppTypesEnum.XLSX]: <FileExcelOutlined />,
-    [MimeAppTypesEnum.PPT]: <FilePptOutlined />,
-    [MimeAppTypesEnum.PPTX]: <FilePptOutlined />,
-    [MimeAppTypesEnum.PDF]: <FilePdfOutlined />,
-    [MimeAppTypesEnum.ZIP]: <FileZipOutlined />,
+    [MimeAppTypesEnum.DOC]: FileWordTwoTone,
+    [MimeAppTypesEnum.DOCX]: FileWordTwoTone,
+    [MimeAppTypesEnum.XLS]: FileExcelTwoTone,
+    [MimeAppTypesEnum.XLSX]: FileExcelTwoTone,
+    [MimeAppTypesEnum.PPT]: FilePptTwoTone,
+    [MimeAppTypesEnum.PPTX]: FilePptTwoTone,
+    [MimeAppTypesEnum.PDF]: FilePdfTwoTone,
+    [MimeAppTypesEnum.ZIP]: FileZipTwoTone,
   },
 }
