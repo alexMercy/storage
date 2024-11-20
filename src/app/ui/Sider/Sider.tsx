@@ -27,13 +27,15 @@ export const Sider: FC = () => {
         collapsedWidth={sidemenuWidth[1]}
         css={styles.sider}
       >
-        <Sidemenu />
+        <div>
+          <Sidemenu />
+        </div>
 
         <div css={styles.collapseWrapper}>
           <Button
             css={styles.collapse}
             color="primary"
-            variant={'filled'}
+            variant="outlined"
             icon={<RightOutlined rotate={!collapsed ? 180 : 0} />}
             onClick={() => setCollapsed((prev) => !prev)}
           >

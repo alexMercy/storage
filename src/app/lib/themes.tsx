@@ -1,9 +1,12 @@
 import { theme, ThemeConfig } from 'antd'
 
+const primary = '#85bd3f'
+
 const themeBase: ThemeConfig = {
   token: {
-    colorPrimary: '#85bd3f',
-    colorInfo: '#85bd3f',
+    colorPrimary: primary,
+    colorInfo: primary,
+
     borderRadius: 10,
     wireframe: false,
     fontFamily: '"Open Sans", sans-serif',
@@ -20,6 +23,7 @@ export const themes: Record<string, ThemeConfig> = {
   light: {
     token: {
       ...themeBase.token,
+      colorPrimaryBg: '#e5fda8',
       colorTextBase: '#1e1e1e',
     },
     components: {
@@ -33,6 +37,7 @@ export const themes: Record<string, ThemeConfig> = {
   dark: {
     token: {
       ...themeBase.token,
+      colorPrimaryBg: '#1b2215',
     },
     components: {
       Layout: {

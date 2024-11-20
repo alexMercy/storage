@@ -13,7 +13,7 @@ const queryClient = new QueryClient()
 
 export const App: FC = () => {
   const { i18n } = useTranslation()
-  const [themePreset, setTheme] = useState(THEMES.DARK)
+  const [themePreset, setTheme] = useState(THEMES.LIGHT)
   const [locale, setLocale] = useState(getAntdLocale())
 
   const toggleTheme = () => {
