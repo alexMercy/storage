@@ -16,6 +16,10 @@ const themeBase: ThemeConfig = {
     Layout: {
       headerHeight: 64,
     },
+    Divider: {
+      lineWidth: 2,
+      colorSplit: 'rgb(56 56 56 / 23%)',
+    },
   },
 }
 
@@ -32,6 +36,12 @@ export const themes: Record<string, ThemeConfig> = {
         siderBg: 'rgb(245,245,245)',
         headerBg: 'rgb(245,245,245)',
       },
+      Divider: {
+        ...themeBase.components?.Divider,
+      },
+      Button: {
+        primaryColor: 'white',
+      },
     },
   },
   dark: {
@@ -44,6 +54,12 @@ export const themes: Record<string, ThemeConfig> = {
         ...themeBase.components?.Layout,
         siderBg: 'rgb(27, 27, 27)',
         headerBg: 'rgb(27, 27, 27)',
+      },
+      Divider: {
+        ...themeBase.components?.Divider,
+      },
+      Button: {
+        primaryColor: 'black',
       },
     },
     algorithm: theme.darkAlgorithm,

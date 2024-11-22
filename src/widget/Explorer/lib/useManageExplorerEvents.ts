@@ -11,6 +11,8 @@ interface ManageExplorerEventsState {
 }
 
 interface ManageExplorerEventsActions {
+  clearSelectionResource: () => void
+  toggleSelectResource: (uuid: string) => void
   selectResources: (resources: string[]) => void
   selectViewType: (type: ExplorerViews) => void
 }
@@ -25,9 +27,27 @@ export const useManageExplorerEvents = create<ManageExplorerEventsStore>(
     viewType: ExplorerViews.CARDS,
 
     //actions
-    selectResources: (resources) => {
-      set({ selectedResources: resources })
+    selectResources: (resourceUuids) => {
+      set({ selectedResources: resourceUuids })
     },
+    clearSelectionResource: () => {
+      set({ selectedResources: [] })
+    },
+    toggleSelectResource: (uuid: string) => {
+      set(({ selectedResources }) => {
+        let resourceUuids: string[] = []
+        const uuidIndex = selectedResources.indexOf(uuid)
+        console.log(uuidIndex)
+        if (uuidIndex === -1) {
+          resourceUuids = [...selectedResources, uuid]
+        } else {
+          selectedResources.splice(uuidIndex, 1)
+          resourceUuids = selectedResources
+        }
+        return { selectedResources: resourceUuids }
+      })
+    },
+
     selectViewType: (viewType) => set({ viewType }),
   })
 )

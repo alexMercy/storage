@@ -1,6 +1,7 @@
 import { localeCtx, themeCtx } from '@/app/lib/core-context'
 import { LOCALES, THEMES } from '@/app/lib/core-enums'
 import { getAntdLocale } from '@/app/lib/i18n'
+import { useScreensHelper } from '@/app/lib/useScreensHelper'
 import { router } from '@/app/routes'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ConfigProvider } from 'antd'
@@ -15,6 +16,8 @@ export const App: FC = () => {
   const { i18n } = useTranslation()
   const [themePreset, setTheme] = useState(THEMES.LIGHT)
   const [locale, setLocale] = useState(getAntdLocale())
+
+  useScreensHelper()
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT))

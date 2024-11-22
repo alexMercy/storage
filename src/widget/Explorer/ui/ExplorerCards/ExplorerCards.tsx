@@ -1,7 +1,8 @@
 import { FolderResources, Resource, RESOURCE_TYPES } from '@/api/resource'
 import { ResourceCard } from '@/entities/Resource'
+import { useManageExplorerEvents } from '@/widget/Explorer/lib/useManageExplorerEvents'
 import { css } from '@emotion/react'
-import { useState, type FC } from 'react'
+import { useEffect, type FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 interface ExplorerCardsProps {
@@ -10,35 +11,40 @@ interface ExplorerCardsProps {
 
 export const ExplorerCards: FC<ExplorerCardsProps> = ({ folder }) => {
   const navigate = useNavigate()
-  const [pressTimeout, setPressTimeout] = useState<NodeJS.Timeout | null>(null)
 
-  const isPressed = !!pressTimeout
+  const {
+    selectedResources,
+    toggleSelectResource,
+    clearSelectionResource,
+    selectResources,
+  } = useManageExplorerEvents()
 
   const onResourceDoubleClick = (resource: Resource) => {
     if (resource.type === RESOURCE_TYPES.FOLDER) {
       navigate(`/disk/${resource.uuid}`)
+      clearSelectionResource()
     }
   }
 
-  const onTouchStartResource = (resource: Resource) => {
-    const timeout = setTimeout(() => {
-      console.log('pressed mock')
-      setPressTimeout(timeout)
-    }, 1000)
+  const onResourceClick = (event: React.MouseEvent, resource: Resource) => {
+    if (!selectedResources.length || event.ctrlKey) {
+      toggleSelectResource(resource.uuid)
+    }
+    if (selectedResources.length === 1 && !event.ctrlKey) {
+      selectResources([resource.uuid])
+    }
   }
 
-  const onTouchEndResource = (resource: Resource) => {
-    if (isPressed) return // mock for select mode
-    pressTimeout && clearTimeout(pressTimeout)
-    setPressTimeout(null)
-    onResourceDoubleClick(resource)
-  }
+  useEffect(() => {
+    console.log(selectedResources)
+  }, [selectedResources])
 
   return (
     <section
       css={css`
         display: flex;
         align-items: center;
+        margin: 0 auto;
         flex-wrap: wrap;
         gap: 12px;
       `}
@@ -48,9 +54,8 @@ export const ExplorerCards: FC<ExplorerCardsProps> = ({ folder }) => {
           key={resource.uuid}
           resource={resource}
           onContextMenu={(e) => e.preventDefault()}
+          onClick={(event) => onResourceClick(event, resource)}
           onDoubleClick={() => onResourceDoubleClick(resource)}
-          onTouchStart={() => onTouchStartResource(resource)}
-          onTouchEnd={() => onTouchEndResource(resource)}
         />
       ))}
     </section>
