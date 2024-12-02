@@ -1,5 +1,7 @@
 import { Sidemenu } from '@/app/ui/Sidemenu/Sidemenu'
-import { RightOutlined } from '@ant-design/icons'
+import { CreateFolder } from '@/features/Explorer/ui/CreateFolder/CreateFolder'
+import { RightOutlined, UploadOutlined } from '@ant-design/icons'
+import { css } from '@emotion/react'
 import { Button, Grid, theme } from 'antd'
 import AntdSider from 'antd/es/layout/Sider'
 import { capitalize } from 'lodash'
@@ -13,7 +15,7 @@ export const Sider: FC = () => {
   const { token } = useToken()
   const { t } = useTranslation()
   const screens = Grid.useBreakpoint()
-  const [collapsed, setCollapsed] = useState(!(screens.lg ?? true))
+  const [collapsed, setCollapsed] = useState(!screens.lg)
   const sidemenuWidth = [350, 150]
 
   const styles = scs({ token, collapsed, screens, sidemenuWidth })
@@ -28,6 +30,24 @@ export const Sider: FC = () => {
         css={styles.sider}
       >
         <div>
+          <CreateFolder collapsed={collapsed} />
+          <Button
+            block
+            type="dashed"
+            css={css({ marginBottom: 12 })}
+            icon={<UploadOutlined />}
+          >
+            <span
+              css={css({
+                transition: 'width .2s ease, margin .2s ease',
+                width: !collapsed ? 120 : 0,
+                marginLeft: !collapsed ? 0 : -5,
+                overflow: 'hidden',
+              })}
+            >
+              {t('upload')}
+            </span>
+          </Button>
           <Sidemenu />
         </div>
 

@@ -1,4 +1,4 @@
-import { FolderResources } from '@/api/resource'
+import { FolderResources } from '@/db/resource'
 import {
   ExplorerViews,
   useManageExplorerEvents,

@@ -1,4 +1,4 @@
-import { Resource, RESOURCE_TYPES } from '@/api/resource'
+import { Resource, RESOURCE_TYPES } from '@/db/resource'
 import { MimeIcon } from '@/shared'
 import { useManageExplorerEvents } from '@/widget/Explorer'
 import { FolderTwoTone } from '@ant-design/icons'

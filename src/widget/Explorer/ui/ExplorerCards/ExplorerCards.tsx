@@ -1,4 +1,4 @@
-import { FolderResources, Resource, RESOURCE_TYPES } from '@/api/resource'
+import { FolderResources, Resource, RESOURCE_TYPES } from '@/db/resource'
 import { ResourceCard } from '@/entities/Resource'
 import { useManageExplorerEvents } from '@/widget/Explorer/lib/useManageExplorerEvents'
 import { css } from '@emotion/react'

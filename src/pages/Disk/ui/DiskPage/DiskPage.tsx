@@ -1,4 +1,4 @@
-import { useResources } from '@/api/resources'
+import { useFolder } from '@/api/resources'
 import { Explorer, ExplorerControlPanel } from '@/widget/Explorer'
 import { css } from '@emotion/react'
 import { Divider } from 'antd'
@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom'
 
 export const DiskPage: FC = () => {
   const { uuid } = useParams()
-  const { data: folder } = useResources(uuid || 'root')
+  const { data: folder } = useFolder(uuid || 'root')
 
   return (
     <div>

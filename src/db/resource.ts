@@ -1,5 +1,4 @@
 import mime from 'mime'
-import { v4 } from 'uuid'
 export const enum RESOURCE_TYPES {
   FOLDER = 'folder',
   FILE = 'file',
@@ -15,7 +14,7 @@ interface ResourceBase {
   title: string
 }
 
-interface AppFile extends ResourceBase {
+export interface AppFile extends ResourceBase {
   type: RESOURCE_TYPES.FILE
   meta: FileMeta
 }
@@ -28,7 +27,7 @@ interface FlatFolder extends ResourceBase {
   type: RESOURCE_TYPES.FOLDER
 }
 
-interface Folder extends FlatFolder {}
+export interface Folder extends FlatFolder {}
 
 export interface FolderResources {
   parentPath: { uuid: string; title: string }[]
@@ -37,14 +36,14 @@ export interface FolderResources {
   resources: Resource[]
 }
 
-const rootFolder: Folder = {
+export const rootFolder: Folder = {
   parent: '',
   type: RESOURCE_TYPES.FOLDER,
   title: 'Мой диск',
   uuid: 'd83492a7-5d23-4af9-a136-9560c4c8c61e',
 }
 
-const rootDB: _Resource[] = [
+export const rootDB: _Resource[] = [
   {
     parent: 'd83492a7-5d23-4af9-a136-9560c4c8c61e',
     uuid: '4ca18f38-083e-4ccf-83f8-237013d77e69',
@@ -135,25 +134,31 @@ const indexedWithFiles = () => {
   return result
 }
 
-let paths = mapPaths()
-let indexes = indexedWithFiles()
+export let paths = mapPaths()
+export let indexes = indexedWithFiles()
 
-const updateStructures = () => {
+export const updateStructures = () => {
   paths = mapPaths()
   indexes = indexedWithFiles()
 }
 
-const findFolder = (path: string[]) => {
-  if (path.length === 1 && path[0] === rootFolder.uuid) return rootFolder
+export const getParentPath = (path: string[]) => {
+  const parentPath: FolderResources['parentPath'] = []
+  // O(M*N) I think, because path is short array
+  for (const node of path) {
+    const resource = [rootFolder, ...rootDB].find((res) => res.uuid === node)
 
-  const folder = rootDB.find((res) => res.uuid === path[path.length - 1])
+    if (!resource) {
+      throw new Error('Wrong path')
+    }
 
-  if (!folder) throw new Error('Folder not found')
+    parentPath.push({ uuid: resource.uuid, title: resource.title })
+  }
 
-  return folder
+  return parentPath
 }
 
-const getChildResources = (path: string[]) => {
+export const getChildResources = (path: string[]) => {
   const resources: Resource[] = []
 
   const node = path.reduce((acc, path) => {
@@ -179,48 +184,12 @@ const getChildResources = (path: string[]) => {
   return resources
 }
 
-//TODO: rewrite later
-const getParentPath = (path: string[]) => {
-  const parentPath: FolderResources['parentPath'] = []
-  // O(M*N) I think, because path is short array
-  for (const node of path) {
-    const resource = [rootFolder, ...rootDB].find((res) => res.uuid === node)
+export const findResource = (path: string[]) => {
+  if (path.length === 1 && path[0] === rootFolder.uuid) return rootFolder
 
-    if (!resource) {
-      throw new Error('Wrong path')
-    }
+  const resource = rootDB.find((res) => res.uuid === path[path.length - 1])
 
-    parentPath.push({ uuid: resource.uuid, title: resource.title })
-  }
+  if (!resource) throw new Error('Resource not found')
 
-  return parentPath
-}
-
-export const getItems = (uuid: string): FolderResources => {
-  const path = uuid !== 'root' ? paths[uuid] : [rootFolder.uuid]
-
-  if (!path) throw new Error('UUID not found')
-
-  const folder = findFolder(path)
-  const parentPath = getParentPath(path)
-
-  return {
-    parentPath,
-    title: folder.title,
-    resources: getChildResources(path) ?? [],
-  }
-}
-export const createFolder = (title: string, parent: string) => {
-  const path = paths[parent]
-
-  if (!path) throw new Error('Parent not found')
-
-  const folder: Folder = {
-    parent,
-    uuid: v4(),
-    type: RESOURCE_TYPES.FOLDER,
-    title,
-  }
-  rootDB.push(folder)
-  updateStructures()
+  return resource
 }

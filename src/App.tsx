@@ -3,9 +3,10 @@ import { LOCALES, THEMES } from '@/app/lib/core-enums'
 import { getAntdLocale } from '@/app/lib/i18n'
 import { useScreensHelper } from '@/app/lib/useScreensHelper'
 import { router } from '@/app/routes'
+import { useIsSearchModalVisible } from '@/features/Explorer'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ConfigProvider } from 'antd'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { RouterProvider } from 'react-router-dom'
 import { themes } from './app/lib/themes'
@@ -16,6 +17,7 @@ export const App: FC = () => {
   const { i18n } = useTranslation()
   const [themePreset, setTheme] = useState(THEMES.LIGHT)
   const [locale, setLocale] = useState(getAntdLocale())
+  const { setSearch } = useIsSearchModalVisible()
 
   useScreensHelper()
 
@@ -28,6 +30,24 @@ export const App: FC = () => {
     i18n.changeLanguage(newLang)
     setLocale(getAntdLocale())
   }
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const isMac = navigator.userAgent.toLowerCase().includes('mac')
+      const isCtrlOrCommand = isMac ? event.metaKey : event.ctrlKey
+
+      if (isCtrlOrCommand && event.code === 'KeyK') {
+        event.preventDefault()
+        setSearch(true)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
 
   document.documentElement.setAttribute('data-theme', themePreset)
 
