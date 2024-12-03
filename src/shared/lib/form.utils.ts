@@ -5,7 +5,7 @@ import {
   FieldWithoutTranslations,
 } from '@/shared'
 
-export const textPattern = /^[\p{L}\s\-]+$/u
+export const textPattern = /^[0-9\.\p{L}\s\-]+$/u
 
 const getTranslation = (
   type: FieldTranslationTypes,

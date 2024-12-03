@@ -1,5 +1,6 @@
 import { useResource } from '@/api/resources'
 import { FolderBody } from '@/db/folderApi'
+import { RESOURCE_TYPES } from '@/db/resource'
 import {
   createFormMap,
   EditorFolderValues,
@@ -10,25 +11,29 @@ import { Form, message, Modal } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
+const getTitle = ({ type, title }: any) => {
+  const isFolder = type === RESOURCE_TYPES.FOLDER
+
+  if (isFolder) return title
+
+  const extension = title.split('.').pop()
+  if (!extension) throw new Error('Wrong file extension')
+  return title.slice(0, -(extension.length + 1))
+}
+
 interface FolderEditorProps<T> {
   open: boolean
+  title: string
   resourceUuid?: string
   onCancel: () => void
   request: T
 }
 
-//UseMutateAsyncFunction<Folder, Error, FolderBody, unknown>
-
-/* UseMutateAsyncFunction<Folder, Error, {
-    uuid: string;
-    body: FolderBody;
-}, unknown>
-*/
-
 export const FolderEditor = <
   T extends UseMutateAsyncFunction<any, Error, any, unknown>
 >({
   open,
+  title,
   resourceUuid,
   request,
   onCancel,
@@ -38,8 +43,11 @@ export const FolderEditor = <
   const [modal, modalContextHolder] = Modal.useModal()
   const [form] = Form.useForm<EditorFolderValues>()
   const { data: resource } = useResource(resourceUuid ?? '')
-
   const { uuid } = useParams()
+
+  const initialValues = {
+    title: resource ? resource.title : t('newFolder'),
+  }
 
   const close = () => {
     form.resetFields()
@@ -80,7 +88,7 @@ export const FolderEditor = <
       {messageContextHolder}
       {modalContextHolder}
       <Modal
-        title={t('createFolder')}
+        title={title}
         destroyOnClose
         open={open}
         onOk={onOk}
@@ -88,7 +96,12 @@ export const FolderEditor = <
         okButtonProps={{ htmlType: 'submit' }}
         closable={false}
       >
-        <FormMapper form={form} fields={createFormMap} onSumbit={onSubmit} />
+        <FormMapper
+          form={form}
+          fields={createFormMap}
+          onSumbit={onSubmit}
+          initialValues={initialValues}
+        />
       </Modal>
     </>
   )

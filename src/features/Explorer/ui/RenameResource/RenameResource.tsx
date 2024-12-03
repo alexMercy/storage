@@ -5,23 +5,14 @@ import { useManageExplorerEvents } from '@/widget/Explorer'
 import { EditOutlined } from '@ant-design/icons'
 import { css } from '@emotion/react'
 import { Button, Tooltip } from 'antd'
-import { t } from 'i18next'
 import { useState, type FC } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface RenameResourceProps {}
 
-const getTitle = ({ type, title }: Resource) => {
-  const isFolder = type === RESOURCE_TYPES.FOLDER
-
-  if (isFolder) return title
-
-  const extension = title.split('.').pop()
-  if (!extension) throw new Error('Wrong file extension')
-  return title.slice(0, -(extension.length + 1))
-}
-
 export const RenameResource: FC<RenameResourceProps> = () => {
   const { selectedResources } = useManageExplorerEvents()
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const resourceUuid = selectedResources[0]
   const { mutateAsync: updateFolder } = useUpdateFolder()
@@ -39,6 +30,7 @@ export const RenameResource: FC<RenameResourceProps> = () => {
         />
       </Tooltip>
       <FolderEditor
+        title={t('renameFolder')}
         open={open}
         onCancel={close}
         request={updateFolder}

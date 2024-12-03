@@ -52,24 +52,25 @@ export const createFolder: (body: FolderBody) => Folder = ({
   return folder
 }
 
-export const updateFolder = (uuid: string, body: FolderBody): Folder => {
-  const path = uuid !== 'root' ? paths[uuid] : [rootFolder.uuid]
-  const parent = body.parent !== 'root' ? body.parent : rootFolder.uuid
+export const updateFolder = (uuid: string, body: FolderBody) => {
+  let resource = undefined
+  let index = -1
 
-  console.log(body, parent)
-
-  if (!path) throw new Error('Path not found')
-
-  const folderIndex = rootDB.findIndex((folder) => folder.uuid === uuid)
-
-  const newFolder: Folder = {
-    ...findResource(path),
-    type: RESOURCE_TYPES.FOLDER,
-    parent,
-    title: body.title,
+  for (let i = 0; i < rootDB.length; i++) {
+    if (rootDB[i].uuid !== uuid) continue
+    resource = rootDB[i]
+    index = i
+    break
   }
 
-  rootDB.splice(folderIndex, 1, newFolder)
+  if (index === -1 || !resource) throw new Error('Resource not found')
+
+  const newFolder = {
+    ...resource,
+    ...body,
+  }
+
+  rootDB.splice(index, 1, newFolder)
 
   updateStructures()
 

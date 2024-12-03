@@ -43,7 +43,7 @@ export const SearchExplorer: FC<SearchExplorerProps> = () => {
           {t('search')}
         </div>
         <Tag bordered={false} css={styles.tag}>
-          Ctrl+k
+          Ctrl+K
         </Tag>
       </Button>
       <Modal

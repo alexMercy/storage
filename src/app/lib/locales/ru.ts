@@ -17,6 +17,9 @@ export const ru = {
   delete: 'Удалить',
   download: 'Скачать',
   createFolder: 'Создать папку',
+  newFolder: 'Новая папка',
+  renameFolder: 'Переименовать папку',
+  upload: 'Загрузить',
   search: 'Искать...',
   rename: 'Переименовать',
   forms: {

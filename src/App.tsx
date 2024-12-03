@@ -3,7 +3,10 @@ import { LOCALES, THEMES } from '@/app/lib/core-enums'
 import { getAntdLocale } from '@/app/lib/i18n'
 import { useScreensHelper } from '@/app/lib/useScreensHelper'
 import { router } from '@/app/routes'
-import { useIsSearchModalVisible } from '@/features/Explorer'
+import {
+  useIsCreateModalVisible,
+  useIsSearchModalVisible,
+} from '@/features/Explorer'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ConfigProvider } from 'antd'
 import { FC, useEffect, useState } from 'react'
@@ -18,6 +21,7 @@ export const App: FC = () => {
   const [themePreset, setTheme] = useState(THEMES.LIGHT)
   const [locale, setLocale] = useState(getAntdLocale())
   const { setSearch } = useIsSearchModalVisible()
+  const { setIsCreateOpen } = useIsCreateModalVisible()
 
   useScreensHelper()
 
@@ -36,9 +40,19 @@ export const App: FC = () => {
       const isMac = navigator.userAgent.toLowerCase().includes('mac')
       const isCtrlOrCommand = isMac ? event.metaKey : event.ctrlKey
 
-      if (isCtrlOrCommand && event.code === 'KeyK') {
-        event.preventDefault()
-        setSearch(true)
+      if (isCtrlOrCommand) {
+        switch (event.code) {
+          case 'KeyK':
+            event.preventDefault()
+            setSearch(true)
+            break
+          case 'KeyP':
+            event.preventDefault()
+            setIsCreateOpen(true)
+            break
+          default:
+            break
+        }
       }
     }
 
@@ -47,7 +61,7 @@ export const App: FC = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [])
+  }, [setSearch, setIsCreateOpen])
 
   document.documentElement.setAttribute('data-theme', themePreset)
 

@@ -2,7 +2,7 @@ import { Sidemenu } from '@/app/ui/Sidemenu/Sidemenu'
 import { CreateFolder } from '@/features/Explorer/ui/CreateFolder/CreateFolder'
 import { RightOutlined, UploadOutlined } from '@ant-design/icons'
 import { css } from '@emotion/react'
-import { Button, Grid, theme } from 'antd'
+import { Button, Grid, Tag, theme } from 'antd'
 import AntdSider from 'antd/es/layout/Sider'
 import { capitalize } from 'lodash'
 import { useState, type FC } from 'react'
@@ -34,19 +34,59 @@ export const Sider: FC = () => {
           <Button
             block
             type="dashed"
-            css={css({ marginBottom: 12 })}
-            icon={<UploadOutlined />}
+            css={css({
+              marginBottom: 12,
+              height: collapsed ? 60 : 32,
+            })}
           >
-            <span
+            <div
               css={css({
-                transition: 'width .2s ease, margin .2s ease',
-                width: !collapsed ? 120 : 0,
-                marginLeft: !collapsed ? 0 : -5,
-                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
               })}
             >
-              {t('upload')}
-            </span>
+              <div
+                css={css({
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginLeft: collapsed ? -7 : 0,
+                  transition: 'margin .2s ease',
+                })}
+              >
+                <UploadOutlined />
+                <span
+                  css={css({
+                    transition: 'width .3s ease, margin .2s ease',
+                    width: !collapsed ? 120 : 0,
+                    marginLeft: !collapsed ? 0 : -5,
+                    overflow: 'hidden',
+                  })}
+                >
+                  {t('upload')}
+                </span>
+              </div>
+              <Tag
+                bordered={false}
+                css={[
+                  css({
+                    padding: '0px 10px',
+                    margin: 0,
+                    borderRadius: 32,
+                    color: token.colorTextPlaceholder,
+                  }),
+                  css({
+                    transition: 'width .2s ease, margin .2s ease',
+                    border: 'none',
+                    overflow: 'hidden',
+                  }),
+                ]}
+              >
+                Drop
+              </Tag>
+            </div>
           </Button>
           <Sidemenu />
         </div>

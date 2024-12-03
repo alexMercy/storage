@@ -16,6 +16,9 @@ export const en = {
   delete: 'Delete',
   download: 'Download',
   createFolder: 'Create folder',
+  newFolder: 'New folder',
+  renameFolder: 'Rename folder',
+  upload: 'Upload',
   search: 'Search...',
   rename: 'Rename',
   forms: {
