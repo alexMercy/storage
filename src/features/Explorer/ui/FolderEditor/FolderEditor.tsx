@@ -1,6 +1,5 @@
 import { useResource } from '@/api/resources'
 import { FolderBody } from '@/db/folderApi'
-import { RESOURCE_TYPES } from '@/db/resource'
 import {
   createFormMap,
   EditorFolderValues,
@@ -10,16 +9,6 @@ import { UseMutateAsyncFunction } from '@tanstack/react-query'
 import { Form, message, Modal } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-
-const getTitle = ({ type, title }: any) => {
-  const isFolder = type === RESOURCE_TYPES.FOLDER
-
-  if (isFolder) return title
-
-  const extension = title.split('.').pop()
-  if (!extension) throw new Error('Wrong file extension')
-  return title.slice(0, -(extension.length + 1))
-}
 
 interface FolderEditorProps<T> {
   open: boolean
