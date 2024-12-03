@@ -8,8 +8,14 @@ import {
   deleteResources as backDeleteResources,
   downloadResources as backDownloadResources,
   getResource as backGetResource,
+  searchResource as backSearchResource,
 } from '@/db/resourceApi'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 
 // #region MOCK RESPONSES
 
@@ -18,7 +24,7 @@ const promiseWrap = <T extends unknown[], R>(
   callback: (...args: T) => R,
   ...args: T
 ): Promise<R> => {
-  return Promise.resolve(callback(...args))
+  return new Promise((res) => setTimeout(() => res(callback(...args)), 300))
 }
 
 const getFolder = (uuid: string) => promiseWrap(backGetFolder, uuid)
@@ -36,6 +42,7 @@ const createResource = (body: FolderBody) => promiseWrap(createFolder, body)
 const downloadResources = (uuids: string[]) =>
   promiseWrap(backDownloadResources, uuids)
 
+const searchResources = (text: string) => promiseWrap(backSearchResource, text)
 // #endregion
 
 // #region QUERIES
@@ -68,7 +75,7 @@ export interface UpdateFolderVariables {
   body: FolderBody
 }
 
-export const useUpdateFolder = () => {
+export const useUpdateResource = () => {
   const qc = useQueryClient()
   return useMutation({
     mutationFn: (value: UpdateFolderVariables) =>
@@ -99,4 +106,11 @@ export const useDownloadResources = () => {
   })
 }
 
+export const useSearchResource = (text: string, enabled = true) =>
+  useQuery({
+    queryKey: ['search', text],
+    queryFn: () => searchResources(text),
+    enabled,
+    placeholderData: keepPreviousData,
+  })
 // #endregion

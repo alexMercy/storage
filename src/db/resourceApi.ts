@@ -30,3 +30,9 @@ export const downloadResources = (uuids: string[]) => {
 
   return uuids.map((uuid) => findResource(uuid))
 }
+
+export const searchResource = (text: string) => {
+  return rootDB.filter(({ title }) =>
+    title.toLowerCase().includes(text.toLowerCase())
+  )
+}

@@ -1,5 +1,4 @@
-import { useUpdateFolder } from '@/api/resources'
-import { Resource, RESOURCE_TYPES } from '@/db/resource'
+import { useUpdateResource } from '@/api/resources'
 import { FolderEditor } from '@/features/Explorer/ui/FolderEditor/FolderEditor'
 import { useManageExplorerEvents } from '@/widget/Explorer'
 import { EditOutlined } from '@ant-design/icons'
@@ -15,7 +14,7 @@ export const RenameResource: FC<RenameResourceProps> = () => {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const resourceUuid = selectedResources[0]
-  const { mutateAsync: updateFolder } = useUpdateFolder()
+  const { mutateAsync: updateFolder } = useUpdateResource()
   const close = () => setOpen(false)
   return (
     <>

@@ -39,7 +39,6 @@ export const App: FC = () => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const isMac = navigator.userAgent.toLowerCase().includes('mac')
       const isCtrlOrCommand = isMac ? event.metaKey : event.ctrlKey
-
       if (isCtrlOrCommand) {
         switch (event.code) {
           case 'KeyK':
