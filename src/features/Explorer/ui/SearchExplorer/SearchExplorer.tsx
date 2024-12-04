@@ -2,9 +2,10 @@ import { useSearchResource } from '@/api/resources'
 import { Resource, RESOURCE_TYPES } from '@/db/resource'
 import { useIsSearchModalVisible } from '@/features/Explorer/lib/useIsSearchModalVisible'
 import searchExplorerStyles from '@/features/Explorer/ui/SearchExplorer/SearchExplorer.css'
+import { HotKeyTag } from '@/shared'
 import { FileOutlined, FolderFilled, SearchOutlined } from '@ant-design/icons'
 import { css } from '@emotion/react'
-import { AutoComplete, Button, Input, InputRef, Modal, Tag } from 'antd'
+import { AutoComplete, Button, Input, InputRef, Modal } from 'antd'
 import useToken from 'antd/es/theme/useToken'
 import { debounce } from 'lodash'
 import { useEffect, useMemo, useRef, useState, type FC } from 'react'
@@ -85,9 +86,7 @@ export const SearchExplorer: FC = () => {
           <SearchOutlined style={{ fontSize: 18 }} />
           {t('search')}
         </div>
-        <Tag bordered={false} css={styles.tag}>
-          Ctrl+K
-        </Tag>
+        <HotKeyTag text="Ctrl+K" />
       </Button>
       <Modal
         destroyOnClose

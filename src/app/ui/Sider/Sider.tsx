@@ -1,17 +1,27 @@
+import { localeCtx, themeCtx } from '@/app/lib/core-context'
+import { THEMES } from '@/app/lib/core-enums'
 import { Sidemenu } from '@/app/ui/Sidemenu/Sidemenu'
 import { CreateFolder } from '@/features/Explorer/ui/CreateFolder/CreateFolder'
-import { RightOutlined, UploadOutlined } from '@ant-design/icons'
+import { CollapsedTile, HotKeyTag } from '@/shared'
+import {
+  MoonOutlined,
+  RightOutlined,
+  SunOutlined,
+  UploadOutlined,
+} from '@ant-design/icons'
 import { css } from '@emotion/react'
-import { Button, Grid, Tag, theme } from 'antd'
+import { Button, Grid, theme } from 'antd'
 import AntdSider from 'antd/es/layout/Sider'
 import { capitalize } from 'lodash'
-import { useState, type FC } from 'react'
+import { useContext, useState, type FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import scs from './Sider.css'
 
 const { useToken } = theme
 
 export const Sider: FC = () => {
+  const { isDark, toggleTheme } = useContext(themeCtx)
+  const { locale, toggleLocale } = useContext(localeCtx)
   const { token } = useToken()
   const { t } = useTranslation()
   const screens = Grid.useBreakpoint()
@@ -29,13 +39,20 @@ export const Sider: FC = () => {
         collapsedWidth={sidemenuWidth[1]}
         css={styles.sider}
       >
-        <div>
+        <div
+          css={css`
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+          `}
+        >
           <CreateFolder collapsed={collapsed} />
           <Button
             block
             type="dashed"
             css={css({
-              marginBottom: 12,
               height: collapsed ? 60 : 32,
             })}
           >
@@ -68,27 +85,31 @@ export const Sider: FC = () => {
                   {t('upload')}
                 </span>
               </div>
-              <Tag
-                bordered={false}
-                css={[
-                  css({
-                    padding: '0px 10px',
-                    margin: 0,
-                    borderRadius: 32,
-                    color: token.colorTextPlaceholder,
-                  }),
-                  css({
-                    transition: 'width .2s ease, margin .2s ease',
-                    border: 'none',
-                    overflow: 'hidden',
-                  }),
-                ]}
-              >
-                Drop
-              </Tag>
+              <HotKeyTag text="Drop" />
             </div>
           </Button>
           <Sidemenu />
+          <div css={styles.sidemenuWrapper}>
+            <CollapsedTile
+              collapsed={collapsed}
+              icon={!isDark ? <SunOutlined /> : <MoonOutlined />}
+              hotKeyText="Ctrl+O"
+              text={capitalize(
+                t(`theme.${[THEMES.LIGHT, THEMES.DARK][+isDark]}`)
+              )}
+              antButtonProps={{ type: 'default' }}
+              onClick={toggleTheme}
+            />
+            <CollapsedTile
+              collapsed={collapsed}
+              icon={locale.toUpperCase()}
+              hotKeyText="Ctrl+L"
+              antButtonProps={{
+                type: 'default',
+              }}
+              onClick={toggleLocale}
+            />
+          </div>
         </div>
 
         <div css={styles.collapseWrapper}>

@@ -49,6 +49,14 @@ export const App: FC = () => {
             event.preventDefault()
             setIsCreateOpen(true)
             break
+          case 'KeyO':
+            event.preventDefault()
+            toggleTheme()
+            break
+          case 'KeyL':
+            event.preventDefault()
+            toggleLocale()
+            break
           default:
             break
         }

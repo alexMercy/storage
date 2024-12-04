@@ -1,9 +1,10 @@
 import { useCreateResource } from '@/api/resources'
 import { useIsCreateModalVisible } from '@/features/Explorer'
 import { FolderEditor } from '@/features/Explorer/ui/FolderEditor/FolderEditor'
+import { HotKeyTag } from '@/shared'
 import { FolderFilled } from '@ant-design/icons'
 import { css } from '@emotion/react'
-import { Button, Tag, theme } from 'antd'
+import { Button } from 'antd'
 import { t } from 'i18next'
 import { type FC } from 'react'
 
@@ -12,7 +13,6 @@ interface CreateFolderProps {
 }
 
 export const CreateFolder: FC<CreateFolderProps> = ({ collapsed = false }) => {
-  const { token } = theme.useToken()
   const { isCreateOpen, setIsCreateOpen } = useIsCreateModalVisible()
   const open = () => setIsCreateOpen(true)
   const close = () => setIsCreateOpen(false)
@@ -25,7 +25,6 @@ export const CreateFolder: FC<CreateFolderProps> = ({ collapsed = false }) => {
         block
         type="primary"
         css={css({
-          marginBottom: 12,
           height: collapsed ? 60 : 32,
         })}
         onClick={open}
@@ -59,24 +58,7 @@ export const CreateFolder: FC<CreateFolderProps> = ({ collapsed = false }) => {
               {t('createFolder')}
             </span>
           </div>
-          <Tag
-            bordered={false}
-            css={[
-              css({
-                padding: '0px 10px',
-                margin: 0,
-                borderRadius: 32,
-                color: token.colorTextPlaceholder,
-              }),
-              css({
-                transition: 'width .2s ease, margin .2s ease',
-                border: 'none',
-                overflow: 'hidden',
-              }),
-            ]}
-          >
-            Ctrl+P
-          </Tag>
+          <HotKeyTag text="Ctrl+P" />
         </div>
       </Button>
       <FolderEditor

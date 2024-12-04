@@ -27,6 +27,14 @@ const root = ({ token, collapsed, screens, sidemenuWidth }: RootProps) => ({
     transition: width 0.2s;
     width: ${!screens.md ? 0 : sidemenuWidth[+collapsed]}px;
   `,
+  sidemenuWrapper: css`
+    width: 100%;
+    display: flex;
+    flex-direction: ${collapsed ? 'column' : 'row'};
+    justify-content: space-between;
+    gap: 12px;
+    border-radius: ${token.borderRadius}px;
+  `,
 })
 
 export default root

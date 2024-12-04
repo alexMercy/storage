@@ -13,11 +13,5 @@ const searchExplorerStyles = (token: GlobalToken) => ({
     align-content: center;
     gap: 4px;
   `,
-  tag: css({
-    padding: '0px 10px',
-    margin: 0,
-    borderRadius: 32,
-    color: token.colorTextPlaceholder,
-  }),
 })
 export default searchExplorerStyles

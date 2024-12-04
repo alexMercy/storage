@@ -11,7 +11,4 @@ export const enum THEMES {
 export const enum SIDEMENU_ITEMS {
   DISK = 'disk',
   TRASH = 'trash',
-  THEME = 'theme',
-  DIVIDER = 'divider',
-  TRANSLATE = 'translate',
 }
