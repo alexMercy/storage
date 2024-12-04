@@ -26,16 +26,18 @@ import {
 } from 'antd'
 import useToken from 'antd/es/theme/useToken'
 import { capitalize } from 'lodash'
-import type { FC } from 'react'
+import { useEffect, useState, type FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import sts from './ExplorerControlPanel.css'
 interface ExplorerControlPanelProps {
   folder: FolderResources | undefined
+  isFetchedFolder: boolean
 }
 
 export const ExplorerControlPanel: FC<ExplorerControlPanelProps> = ({
   folder,
+  isFetchedFolder,
 }) => {
   const navigate = useNavigate()
   const { token } = theme.useToken()
@@ -50,7 +52,9 @@ export const ExplorerControlPanel: FC<ExplorerControlPanelProps> = ({
 
   const styles = sts
 
-  const isUpButtonCollapsed = !((folder?.parentPath?.length || 0) > 1)
+  const [isUpButtonCollapsed, setIsUpButtonCollapsed] = useState<
+    boolean | undefined
+  >(undefined)
 
   const onUpClick = ({ parentPath }: FolderResources) => {
     const isParentRoot = parentPath.length === 2
@@ -62,6 +66,34 @@ export const ExplorerControlPanel: FC<ExplorerControlPanelProps> = ({
     }
     clearSelectionResource()
   }
+
+  //rewrite to effect for set correct initial state on parent node and keep previous data on new nodes
+  useEffect(() => {
+    if (!isFetchedFolder) setIsUpButtonCollapsed((prev) => prev ?? true)
+    else setIsUpButtonCollapsed(!((folder?.parentPath?.length || 0) > 1))
+  }, [isFetchedFolder, folder])
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // const isMac = navigator.userAgent.toLowerCase().includes('mac')
+      // const isCtrlOrCommand = isMac ? event.metaKey : event.ctrlKey
+      console.log(folder)
+
+      switch (event.code) {
+        case 'Backspace':
+          onUpClick(folder!)
+          break
+        default:
+          break
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [folder])
 
   return (
     <div>
@@ -90,7 +122,7 @@ export const ExplorerControlPanel: FC<ExplorerControlPanelProps> = ({
       </div>
       <div css={styles.panelContainerLeft}>
         <Button
-          css={styles.upButton(isUpButtonCollapsed)}
+          css={styles.upButton(isUpButtonCollapsed ?? false)}
           tabIndex={isUpButtonCollapsed ? -1 : undefined}
           icon={<ArrowUpOutlined />}
           type="primary"

@@ -7,11 +7,11 @@ import { useParams } from 'react-router-dom'
 
 export const DiskPage: FC = () => {
   const { uuid } = useParams()
-  const { data: folder } = useFolder(uuid || 'root')
+  const { data: folder, isFetched } = useFolder(uuid || 'root')
 
   return (
     <div>
-      <ExplorerControlPanel folder={folder} />
+      <ExplorerControlPanel folder={folder} isFetchedFolder={isFetched} />
       <Divider
         css={css`
           margin: 12px 0 24px;

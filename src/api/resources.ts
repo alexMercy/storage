@@ -10,12 +10,7 @@ import {
   getResource as backGetResource,
   searchResource as backSearchResource,
 } from '@/db/resourceApi'
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 // #region MOCK RESPONSES
 
@@ -111,6 +106,5 @@ export const useSearchResource = (text: string, enabled = true) =>
     queryKey: ['search', text],
     queryFn: () => searchResources(text),
     enabled,
-    placeholderData: keepPreviousData,
   })
 // #endregion

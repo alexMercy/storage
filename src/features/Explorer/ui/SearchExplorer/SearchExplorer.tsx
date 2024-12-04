@@ -3,16 +3,21 @@ import { Resource, RESOURCE_TYPES } from '@/db/resource'
 import { useIsSearchModalVisible } from '@/features/Explorer/lib/useIsSearchModalVisible'
 import searchExplorerStyles from '@/features/Explorer/ui/SearchExplorer/SearchExplorer.css'
 import { HotKeyTag } from '@/shared'
-import { FileOutlined, FolderFilled, SearchOutlined } from '@ant-design/icons'
+import {
+  FileOutlined,
+  FolderFilled,
+  LoadingOutlined,
+  SearchOutlined,
+} from '@ant-design/icons'
 import { css } from '@emotion/react'
 import { AutoComplete, Button, Input, InputRef, Modal } from 'antd'
 import useToken from 'antd/es/theme/useToken'
 import { debounce } from 'lodash'
 import { useEffect, useMemo, useRef, useState, type FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { NavigateFunction, useNavigate } from 'react-router-dom'
 
-const getOptions = (searchOptions: Resource[]) => {
+const getOptions = (searchOptions: Resource[], navigate: NavigateFunction) => {
   return searchOptions.map((resource) => {
     const value =
       resource.type === RESOURCE_TYPES.FOLDER ? resource.uuid : resource.parent
@@ -24,9 +29,12 @@ const getOptions = (searchOptions: Resource[]) => {
         <FileOutlined />
       )
     return {
-      value,
+      value: resource.uuid,
       label: (
-        <div css={css({ display: 'flex', gap: '5px' })}>
+        <div
+          onClick={() => navigate(`/disk/${value}`)}
+          css={css({ display: 'flex', gap: '5px' })}
+        >
           {icon}
           {resource.title}
         </div>
@@ -44,10 +52,13 @@ export const SearchExplorer: FC = () => {
 
   const [searchText, setSearchText] = useState('')
   const searchRef = useRef<InputRef | null>(null)
-  const { data: searchOptions } = useSearchResource(searchText, !!searchText)
+  const { data: searchOptions, isFetching } = useSearchResource(
+    searchText,
+    !!searchText
+  )
 
   const options = useMemo(
-    () => (searchOptions ? getOptions(searchOptions) : []),
+    () => (searchOptions ? getOptions(searchOptions, navigate) : []),
     [searchOptions]
   )
 
@@ -57,8 +68,6 @@ export const SearchExplorer: FC = () => {
     input!.disabled = true
     setSearch(false)
     console.log(value)
-
-    navigate(`/disk/${value}`)
   }
 
   const debouncedSetSearchValue = debounce(setSearchText, 200)
@@ -103,10 +112,10 @@ export const SearchExplorer: FC = () => {
           onSearch={handleSearch}
         >
           <Input
+            size="large"
             variant="filled"
             ref={searchRef}
-            placeholder="input here"
-            prefix={<SearchOutlined />}
+            prefix={isFetching ? <LoadingOutlined spin /> : <SearchOutlined />}
           />
         </AutoComplete>
       </Modal>
