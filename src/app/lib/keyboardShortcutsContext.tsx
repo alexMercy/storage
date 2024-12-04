@@ -5,6 +5,8 @@ type Callback = () => void
 
 const COMPLEX_SYMBOL = '+'
 
+const EDITABLE_HTML_TAGS = ['INPUT', 'TEXTAREA']
+
 export const getComplexKey = (...keys: string[]) => {
   return keys.join(COMPLEX_SYMBOL)
 }
@@ -23,6 +25,16 @@ export const KeyboardShortcutProvider: React.FC<{
   const shortcuts = useRef<Map<KeyCombination, Callback>>(new Map())
 
   const handleKeyDown = (event: KeyboardEvent) => {
+    const target = event.target as HTMLElement
+
+    //Off hotkeys on input elements
+    if (
+      EDITABLE_HTML_TAGS.includes(target.tagName) ||
+      target.isContentEditable
+    ) {
+      return
+    }
+
     const isCtrlOrMeta = event.ctrlKey || event.metaKey
 
     const combination = [

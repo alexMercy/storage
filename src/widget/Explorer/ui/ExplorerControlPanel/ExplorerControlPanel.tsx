@@ -77,9 +77,8 @@ export const ExplorerControlPanel: FC<ExplorerControlPanelProps> = ({
 
   useEffect(() => {
     const callback = () => {
-      if (!isUpButtonCollapsed) {
-        onUpClick(folder!)
-      }
+      if (isUpButtonCollapsed) return
+      onUpClick(folder!)
     }
     addShortcut('Backspace', callback)
 
