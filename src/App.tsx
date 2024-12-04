@@ -1,6 +1,10 @@
 import { localeCtx, themeCtx } from '@/app/lib/core-context'
 import { LOCALES, THEMES } from '@/app/lib/core-enums'
 import { getAntdLocale } from '@/app/lib/i18n'
+import {
+  getComplexKey,
+  useKeyboardShortcut,
+} from '@/app/lib/keyboardShortcutsContext'
 import { useScreensHelper } from '@/app/lib/useScreensHelper'
 import { router } from '@/app/routes'
 import {
@@ -17,6 +21,8 @@ import { themes } from './app/lib/themes'
 const queryClient = new QueryClient()
 
 export const App: FC = () => {
+  const { addShortcut, removeShortcut } = useKeyboardShortcut()
+
   const { i18n } = useTranslation()
   const [themePreset, setTheme] = useState(THEMES.LIGHT)
   const [locale, setLocale] = useState(getAntdLocale())
@@ -36,39 +42,29 @@ export const App: FC = () => {
   }
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const isMac = navigator.userAgent.toLowerCase().includes('mac')
-      const isCtrlOrCommand = isMac ? event.metaKey : event.ctrlKey
-      if (isCtrlOrCommand) {
-        switch (event.code) {
-          case 'KeyK':
-            event.preventDefault()
-            setSearch(true)
-            break
-          case 'KeyP':
-            event.preventDefault()
-            setIsCreateOpen(true)
-            break
-          case 'KeyO':
-            event.preventDefault()
-            toggleTheme()
-            break
-          case 'KeyL':
-            event.preventDefault()
-            toggleLocale()
-            break
-          default:
-            break
-        }
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-
+    const keyDownMap = [
+      {
+        keys: getComplexKey('Ctrl', 'KeyK'),
+        callback: () => setSearch(true),
+      },
+      {
+        keys: getComplexKey('Ctrl', 'KeyP'),
+        callback: () => setIsCreateOpen(true),
+      },
+      {
+        keys: getComplexKey('Ctrl', 'KeyO'),
+        callback: () => toggleTheme(),
+      },
+      {
+        keys: getComplexKey('Ctrl', 'KeyL'),
+        callback: () => toggleLocale(),
+      },
+    ]
+    keyDownMap.forEach(({ keys, callback }) => addShortcut(keys, callback))
     return () => {
-      window.removeEventListener('keydown', handleKeyDown)
+      keyDownMap.forEach(({ keys }) => removeShortcut(keys))
     }
-  }, [setSearch, setIsCreateOpen])
+  }, [])
 
   document.documentElement.setAttribute('data-theme', themePreset)
 

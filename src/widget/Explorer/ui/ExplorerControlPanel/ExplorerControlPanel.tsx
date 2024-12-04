@@ -1,3 +1,4 @@
+import { useKeyboardShortcut } from '@/app/lib/keyboardShortcutsContext'
 import { FolderResources } from '@/db/resource'
 import {
   DeleteResources,
@@ -39,6 +40,7 @@ export const ExplorerControlPanel: FC<ExplorerControlPanelProps> = ({
   folder,
   isFetchedFolder,
 }) => {
+  const { addShortcut, removeShortcut } = useKeyboardShortcut()
   const navigate = useNavigate()
   const { token } = theme.useToken()
   const baseToken = useToken()[1]
@@ -74,26 +76,15 @@ export const ExplorerControlPanel: FC<ExplorerControlPanelProps> = ({
   }, [isFetchedFolder, folder])
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      // const isMac = navigator.userAgent.toLowerCase().includes('mac')
-      // const isCtrlOrCommand = isMac ? event.metaKey : event.ctrlKey
-      console.log(folder)
-
-      switch (event.code) {
-        case 'Backspace':
-          onUpClick(folder!)
-          break
-        default:
-          break
+    const callback = () => {
+      if (!isUpButtonCollapsed) {
+        onUpClick(folder!)
       }
     }
+    addShortcut('Backspace', callback)
 
-    window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [folder])
+    return () => removeShortcut('Backspace')
+  }, [folder, isUpButtonCollapsed])
 
   return (
     <div>
