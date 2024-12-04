@@ -52,7 +52,7 @@ export const KeyboardShortcutProvider: React.FC<{
   }
 
   const removeShortcut = (keys: KeyCombination) => {
-    shortcuts.current.delete(keys)
+    shortcuts.current.delete(keys.toLowerCase())
   }
 
   return (
