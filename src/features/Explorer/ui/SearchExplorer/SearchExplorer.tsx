@@ -15,9 +15,9 @@ import useToken from 'antd/es/theme/useToken'
 import { debounce } from 'lodash'
 import { useEffect, useMemo, useRef, useState, type FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { NavigateFunction, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-const getOptions = (searchOptions: Resource[], navigate: NavigateFunction) => {
+const getOptions = (searchOptions: Resource[]) => {
   return searchOptions.map((resource) => {
     const value =
       resource.type === RESOURCE_TYPES.FOLDER ? resource.uuid : resource.parent
@@ -29,12 +29,9 @@ const getOptions = (searchOptions: Resource[], navigate: NavigateFunction) => {
         <FileOutlined />
       )
     return {
-      value: resource.uuid,
+      value: [value],
       label: (
-        <div
-          onClick={() => navigate(`/disk/${value}`)}
-          css={css({ display: 'flex', gap: '5px' })}
-        >
+        <div css={css({ display: 'flex', gap: '5px' })}>
           {icon}
           {resource.title}
         </div>
@@ -58,15 +55,18 @@ export const SearchExplorer: FC = () => {
   )
 
   const options = useMemo(
-    () => (searchOptions ? getOptions(searchOptions, navigate) : []),
+    () => (searchOptions ? getOptions(searchOptions) : []),
     [searchOptions]
   )
 
-  const onSelect = (value: string) => {
+  const onSelect = (value: unknown) => {
+    if (!Array.isArray(value)) throw new Error('wrong value')
+
     const { input } = searchRef.current!
     input!.value = ''
     input!.disabled = true
     setSearch(false)
+    navigate(`/disk/${value[0]}`)
     console.log(value)
   }
 
