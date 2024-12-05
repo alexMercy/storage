@@ -1,22 +1,12 @@
 import { useFolder, useMoveResource } from '@/api/resources'
 import { MoveResourceOutlined } from '@/assets'
-import { FolderResources, RESOURCE_TYPES } from '@/db/resource'
+import { RESOURCE_TYPES } from '@/db/resource'
 import { useManageExplorerEvents } from '@/widget/Explorer'
 import { LoadingOutlined } from '@ant-design/icons'
 import { css } from '@emotion/react'
 import { Button, Modal, Tooltip } from 'antd'
 import { t } from 'i18next'
 import { useState, type FC } from 'react'
-
-const getFilteredAvailableFolders = (
-  folder: FolderResources,
-  selectedResources: string[]
-) => {
-  return folder.resources.filter(
-    (v) =>
-      v.type === RESOURCE_TYPES.FOLDER && !selectedResources.includes(v.uuid)
-  )
-}
 
 interface MoveResourcesProps {}
 
