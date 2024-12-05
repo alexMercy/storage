@@ -53,7 +53,7 @@ export const Sider: FC = () => {
             block
             type="dashed"
             css={css({
-              height: collapsed ? 60 : 32,
+              height: collapsed ? 60 : 40,
             })}
           >
             <div

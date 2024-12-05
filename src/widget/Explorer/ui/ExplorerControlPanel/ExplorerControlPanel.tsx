@@ -3,6 +3,7 @@ import { FolderResources } from '@/db/resource'
 import {
   DeleteResources,
   DownloadResources,
+  MoveResources,
   RenameResource,
 } from '@/features/Explorer'
 import {
@@ -69,7 +70,7 @@ export const ExplorerControlPanel: FC<ExplorerControlPanelProps> = ({
     clearSelectionResource()
   }
 
-  //rewrite to effect for set correct initial state on parent node and keep previous data on new nodes
+  //rewrited to effect for set correct initial state on parent node and keep previous data on new nodes
   useEffect(() => {
     if (!isFetchedFolder) setIsUpButtonCollapsed((prev) => prev ?? true)
     else setIsUpButtonCollapsed(!((folder?.parentPath?.length || 0) > 1))
@@ -130,6 +131,7 @@ export const ExplorerControlPanel: FC<ExplorerControlPanelProps> = ({
         </Button>
         <div css={styles.selection.container(selectedResources.length)}>
           <DownloadResources />
+          <MoveResources />
           <RenameResource />
           <DeleteResources />
           <Divider

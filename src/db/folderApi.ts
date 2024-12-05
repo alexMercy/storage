@@ -76,3 +76,18 @@ export const updateFolder = (uuid: string, body: FolderBody) => {
 
   return newFolder
 }
+
+export const updateFolders = (uuids: string[], parent: string) => {
+  let counter = 0
+  for (let i = 0; i < rootDB.length; i++) {
+    if (uuids.includes(rootDB[i].uuid)) {
+      rootDB[i] = { ...rootDB[i], parent }
+      counter++
+    }
+    if (uuids.length === counter) {
+      break
+    }
+  }
+
+  updateStructures()
+}

@@ -1,6 +1,7 @@
 import {
   getFolder as backGetFolder,
   updateFolder as backUpdateBolder,
+  updateFolders as backUpdateFolders,
   createFolder,
   FolderBody,
 } from '@/db/folderApi'
@@ -26,6 +27,9 @@ const getFolder = (uuid: string) => promiseWrap(backGetFolder, uuid)
 
 const updateFolder = (uuid: string, body: FolderBody) =>
   promiseWrap(backUpdateBolder, uuid, body)
+
+const updateFolders = (uuids: string[], parent: string) =>
+  promiseWrap(backUpdateFolders, uuids, parent)
 
 const deleteResource = (uuids: string[]) =>
   promiseWrap(backDeleteResources, uuids)
@@ -75,6 +79,21 @@ export const useUpdateResource = () => {
   return useMutation({
     mutationFn: (value: UpdateFolderVariables) =>
       updateFolder(value.uuid, value.body),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['resources'] })
+    },
+  })
+}
+
+export interface UpdateFoldersVariables {
+  uuids: string[]
+  parent: string
+}
+export const useMoveResource = () => {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (value: UpdateFoldersVariables) =>
+      updateFolders(value.uuids, value.parent),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['resources'] })
     },

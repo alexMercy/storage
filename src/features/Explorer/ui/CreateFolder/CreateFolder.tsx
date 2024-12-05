@@ -25,7 +25,7 @@ export const CreateFolder: FC<CreateFolderProps> = ({ collapsed = false }) => {
         block
         type="primary"
         css={css({
-          height: collapsed ? 60 : 32,
+          height: collapsed ? 60 : 40,
         })}
         onClick={open}
       >
